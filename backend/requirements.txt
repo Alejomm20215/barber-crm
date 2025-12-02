@@ -1,0 +1,12 @@
+django>=5.0
+supabase
+sqlalchemy
+gunicorn
+celery
+redis
+python-dotenv
+psycopg2-binary
+flower
+djangorestframework
+django-cors-headers
+dj-database-url
