@@ -10,9 +10,8 @@ class CustomerViewSet(viewsets.ModelViewSet):
     """
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.AllowAny]  # Using global settings
     
     def get_queryset(self):
-        """Filter customers by user's businesses"""
-        user_businesses = Business.objects.filter(owner=self.request.user)
-        return Customer.objects.filter(business__in=user_businesses)
+        """Return all customers for development"""
+        return Customer.objects.all()

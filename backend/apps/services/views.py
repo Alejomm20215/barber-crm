@@ -10,9 +10,8 @@ class ServiceViewSet(viewsets.ModelViewSet):
     """
     queryset = Service.objects.all()
     serializer_class = ServiceSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.AllowAny]  # Using global settings
     
     def get_queryset(self):
-        """Filter services by user's businesses"""
-        user_businesses = Business.objects.filter(owner=self.request.user)
-        return Service.objects.filter(business__in=user_businesses)
+        """Return all services for development"""
+        return Service.objects.all()

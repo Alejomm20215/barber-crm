@@ -9,11 +9,11 @@ class BusinessViewSet(viewsets.ModelViewSet):
     """
     queryset = Business.objects.all()
     serializer_class = BusinessSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.AllowAny]  # Using global settings
     
     def get_queryset(self):
-        """Filter businesses by owner"""
-        return Business.objects.filter(owner=self.request.user)
+        """Return all businesses for development"""
+        return Business.objects.all()
     
     def perform_create(self, serializer):
         """Set the owner to the current user"""

@@ -1,134 +1,108 @@
-"""Dashboard Page"""
+"""Premium Dashboard Page"""
 
 import reflex as rx
-from barber_crm.state import DashboardState
+from barber_crm.state import AppState
+from barber_crm import styles
+from barber_crm.layout import layout
 
-
-def stat_card(title: str, value: str, icon: str, color: str) -> rx.Component:
-    """Create a stat card component"""
-    return rx.card(
-        rx.vstack(
-            rx.hstack(
-                rx.icon(icon, size=32, color=color),
-                rx.spacer(),
+def stat_card(title: str, value: rx.Var, icon: str):
+    return styles.premium_card(
+        rx.hstack(
+            rx.vstack(
+                rx.text(title, size="2", color=styles.text_secondary, weight="medium"),
+                rx.heading(value, size="8", color="white", letter_spacing="-1px"),
+                align="start",
+                spacing="1",
             ),
-            rx.heading(value, size="8", weight="bold"),
-            rx.text(title, size="2", color="gray"),
-            spacing="2",
+            rx.spacer(),
+            rx.center(
+                rx.icon(icon, size=24, color=styles.accent_color),
+                background=f"rgba(212, 175, 55, 0.1)",
+                padding="12px",
+                border_radius="12px",
+                border=f"1px solid {styles.accent_color}20",
+                box_shadow=f"0 0 20px -5px {styles.accent_color}30",
+            ),
+            align="center",
+            width="100%",
+        )
+    )
+
+def dashboard_content():
+    return rx.vstack(
+        # Header
+        rx.hstack(
+            styles.page_title("Dashboard", f"Overview for {AppState.selected_business_name}"),
+            rx.spacer(),
+            rx.menu.root(
+                rx.menu.trigger(
+                    rx.button(
+                        rx.hstack(
+                            rx.text(AppState.selected_business_name),
+                            rx.icon("chevron-down", size=16),
+                        ),
+                        variant="outline",
+                        color_scheme="gray",
+                    ),
+                ),
+                rx.menu.content(
+                    rx.foreach(
+                        AppState.businesses,
+                        lambda business: rx.menu.item(
+                            business.name,
+                            on_click=AppState.select_business(business.id, business.name),
+                        ),
+                    ),
+                ),
+            ),
+            width="100%",
             align="start",
         ),
-        width="100%",
-    )
-
-
-def dashboard() -> rx.Component:
-    """Main dashboard page"""
-    return rx.container(
-        rx.vstack(
-            # Header
-            rx.heading("Barbershop CRM Dashboard", size="9", weight="bold"),
-            rx.text("Manage your barbershop business", size="4", color="gray"),
-            
-            # Stats Grid
-            rx.grid(
-                stat_card(
-                    "Total Customers",
-                    DashboardState.total_customers,
-                    "users",
-                    "blue"
-                ),
-                stat_card(
-                    "Total Appointments",
-                    DashboardState.total_appointments,
-                    "calendar",
-                    "green"
-                ),
-                stat_card(
-                    "Staff Members",
-                    DashboardState.total_staff,
-                    "user-check",
-                    "purple"
-                ),
-                stat_card(
-                    "Services",
-                    rx.text(f"{len(DashboardState.services)}"),
-                    "scissors",
-                    "orange"
-                ),
-                columns="4",
-                spacing="4",
-                width="100%",
-            ),
-            
-            # Quick Actions
-            rx.heading("Quick Actions", size="6", margin_top="8"),
-            rx.hstack(
-                rx.button(
-                    rx.icon("plus", margin_right="2"),
-                    "New Appointment",
-                    color_scheme="blue",
-                    size="3",
-                ),
-                rx.button(
-                    rx.icon("user-plus", margin_right="2"),
-                    "Add Customer",
-                    color_scheme="green",
-                    size="3",
-                ),
-                rx.button(
-                    rx.icon("users", margin_right="2"),
-                    "Manage Staff",
-                    color_scheme="purple",
-                    size="3",
-                ),
-                spacing="4",
-            ),
-            
-            # Recent Appointments
-            rx.heading("Recent Appointments", size="6", margin_top="8"),
-            rx.cond(
-                DashboardState.is_loading,
-                rx.spinner(size="3"),
-                rx.table.root(
-                    rx.table.header(
-                        rx.table.row(
-                            rx.table.column_header_cell("Customer"),
-                            rx.table.column_header_cell("Staff"),
-                            rx.table.column_header_cell("Service"),
-                            rx.table.column_header_cell("Date"),
-                            rx.table.column_header_cell("Status"),
-                        ),
-                    ),
-                    rx.table.body(
-                        rx.foreach(
-                            DashboardState.appointments[:10],
-                            lambda appt: rx.table.row(
-                                rx.table.cell(appt["customer_name"]),
-                                rx.table.cell(appt["staff_name"]),
-                                rx.table.cell(appt["service_name"]),
-                                rx.table.cell(appt["scheduled_at"]),
-                                rx.table.cell(
-                                    rx.badge(appt["status_display"], color_scheme="blue")
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-            
-            # Error message
-            rx.cond(
-                DashboardState.error_message != "",
-                rx.callout(
-                    DashboardState.error_message,
-                    icon="alert-circle",
-                    color_scheme="red",
-                ),
-            ),
-            
+        
+        # Stats Grid
+        rx.grid(
+            stat_card("Total Customers", AppState.total_customers, "users"),
+            stat_card("Appointments", AppState.total_appointments, "calendar"),
+            stat_card("Staff Members", AppState.total_staff, "user-check"),
+            stat_card("Services", AppState.total_services, "scissors"),
+            columns="4",
             spacing="6",
-            padding="8",
             width="100%",
         ),
-        on_mount=DashboardState.load_dashboard_data,
+        
+        # Recent Activity Section
+        rx.heading("Recent Activity", size="5", color="white", margin_top="8", margin_bottom="4"),
+        
+        rx.cond(
+            AppState.appointments,
+            rx.vstack(
+                rx.foreach(
+                    AppState.appointments,  # Slicing might be limited, just showing all for now or first few if supported
+                    lambda appt: styles.premium_card(
+                        rx.hstack(
+                            rx.avatar(fallback="?", size="3"),
+                            rx.vstack(
+                                rx.text(appt.customer_name, weight="bold", color="white"),
+                                rx.text("Booked ", appt.service_name, size="2", color="gray"),
+                                spacing="0",
+                            ),
+                            rx.spacer(),
+                            rx.text(appt.scheduled_at, size="2", color="gray"),
+                            width="100%",
+                            align="center",
+                        ),
+                        padding="4",
+                    ),
+                ),
+                spacing="3",
+                width="100%",
+            ),
+            rx.text("No recent activity", color="gray"),
+        ),
+        
+        width="100%",
+        on_mount=AppState.load_businesses,
     )
+
+def dashboard():
+    return layout(dashboard_content())
