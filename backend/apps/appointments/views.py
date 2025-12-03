@@ -9,7 +9,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
     ViewSet for Appointment CRUD operations
     """
     queryset = Appointment.objects.all()
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.AllowAny]  # Using global settings
     
     def get_serializer_class(self):
         """Use lighter serializer for list view"""
@@ -18,8 +18,7 @@ class AppointmentViewSet(viewsets.ModelViewSet):
         return AppointmentSerializer
     
     def get_queryset(self):
-        """Filter appointments by user's businesses"""
-        user_businesses = Business.objects.filter(owner=self.request.user)
-        return Appointment.objects.filter(business__in=user_businesses).select_related(
+        """Return all appointments for development"""
+        return Appointment.objects.all().select_related(
             'staff', 'customer', 'service', 'business'
         )

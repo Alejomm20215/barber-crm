@@ -11,6 +11,7 @@ WORKDIR /app
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     postgresql-client \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
 # Install Python dependencies
@@ -20,6 +21,7 @@ RUN pip install --upgrade pip && \
 
 # Copy project
 COPY . .
+RUN rm -f .env
 
 # Create non-root user
 RUN useradd -m -u 1000 appuser && \

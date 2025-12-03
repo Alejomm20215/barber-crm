@@ -2,6 +2,47 @@
 
 A production-ready Barbershop CRM built with **Django**, **Supabase**, **SQLAlchemy**, **Reflex**, **Kubernetes**, **Redis**, **Celery**, and **CI/CD Pipeline**.
 
+---
+
+## 📚 Documentation Index
+
+**🚀 New to this project? Start here:**
+
+1. **[QUICKSTART.md](QUICKSTART.md)** ⭐ - Get up and running in 10 minutes
+2. **[COMPLETE_OVERVIEW.md](COMPLETE_OVERVIEW.md)** - Full project summary
+3. **[TESTING_SECURITY.md](TESTING_SECURITY.md)** - Testing & security details
+
+**📖 Additional Documentation:**
+
+- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - What's been built
+- **[SECURITY.md](SECURITY.md)** - Security policy
+- **[BRANCH_PROTECTION.md](BRANCH_PROTECTION.md)** - GitHub setup guide
+- **[SUPABASE_RLS.md](SUPABASE_RLS.md)** - Database RLS policies
+
+---
+
+## 🎯 Quick Start
+
+```powershell
+# 1. Setup Supabase (get credentials from supabase.com)
+# 2. Update backend/.env with your credentials
+# 3. Start the application
+
+# Option A: Docker Compose (Recommended)
+docker-compose up -d
+docker-compose exec backend python manage.py migrate
+docker-compose exec backend python manage.py createsuperuser
+
+# Option B: Quick Start Script
+.\start.ps1
+```
+
+**Access:** http://localhost:8000 (API) | http://localhost:8000/admin (Admin)
+
+**Full instructions:** See [QUICKSTART.md](QUICKSTART.md)
+
+---
+
 ## 🏗️ Architecture
 
 - **Monolithic Backend**: Django REST Framework

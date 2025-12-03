@@ -10,9 +10,8 @@ class StaffViewSet(viewsets.ModelViewSet):
     """
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.AllowAny]  # Using global settings
     
     def get_queryset(self):
-        """Filter staff by user's businesses"""
-        user_businesses = Business.objects.filter(owner=self.request.user)
-        return Staff.objects.filter(business__in=user_businesses)
+        """Return all staff for development"""
+        return Staff.objects.all()
