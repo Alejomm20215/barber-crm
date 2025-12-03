@@ -1,10 +1,10 @@
-"""Page exports"""
+"""Pages module exports"""
 
-from .dashboard import dashboard
-from .customers import customers_page
-from .staff import staff_page
-from .services import services_page
-from .appointments import appointments_page
+from barber_crm.pages.dashboard import dashboard
+from barber_crm.pages.customers import customers_page
+from barber_crm.pages.staff import staff_page
+from barber_crm.pages.services import services_page
+from barber_crm.pages.appointments import appointments_page
 
 __all__ = [
     "dashboard",
