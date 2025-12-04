@@ -1,18 +1,23 @@
 """Main Application Layout - Premium Barbershop Theme"""
 
 import reflex as rx
-from barber_crm.state import AppState
+
 from barber_crm import styles
+from barber_crm.state import AppState
 
 
 def nav_item(text: str, icon: str, href: str, is_active: bool = False):
     """Navigation item with hover effects"""
-    active_style = {
-        "background": f"linear-gradient(90deg, rgba(201, 162, 39, 0.15) 0%, transparent 100%)",
-        "border_left": f"3px solid {styles.GOLD}",
-        "color": styles.GOLD,
-    } if is_active else {}
-    
+    active_style = (
+        {
+            "background": "linear-gradient(90deg, rgba(201, 162, 39, 0.15) 0%, transparent 100%)",
+            "border_left": f"3px solid {styles.GOLD}",
+            "color": styles.GOLD,
+        }
+        if is_active
+        else {}
+    )
+
     return rx.link(
         rx.hstack(
             rx.icon(icon, size=20, color=styles.GOLD if is_active else styles.GRAY_500),
@@ -50,9 +55,9 @@ def sidebar():
                     rx.icon("scissors", size=24, color=styles.GOLD),
                     width="48px",
                     height="48px",
-                    background=f"linear-gradient(135deg, rgba(201, 162, 39, 0.2) 0%, rgba(201, 162, 39, 0.05) 100%)",
+                    background="linear-gradient(135deg, rgba(201, 162, 39, 0.2) 0%, rgba(201, 162, 39, 0.05) 100%)",
                     border_radius="14px",
-                    border=f"1px solid rgba(201, 162, 39, 0.3)",
+                    border="1px solid rgba(201, 162, 39, 0.3)",
                 ),
                 rx.vstack(
                     rx.text(
@@ -77,7 +82,6 @@ def sidebar():
                 padding="8px",
                 margin_bottom="32px",
             ),
-            
             # Business Selector
             rx.box(
                 rx.menu.root(
@@ -121,21 +125,26 @@ def sidebar():
                 width="100%",
                 margin_bottom="24px",
             ),
-            
             # Navigation Links
             rx.vstack(
-                rx.text("MENU", size="1", weight="bold", color=styles.GRAY_700, letter_spacing="2px", padding_left="16px"),
-                nav_item("Dashboard", "layout-dashboard", "/"),
+                rx.text(
+                    "MENU", size="1", weight="bold", color=styles.GRAY_700, letter_spacing="2px", padding_left="16px"
+                ),
+                nav_item("Dashboard", "layout-dashboard", "/dashboard"),
                 nav_item("Appointments", "calendar-clock", "/appointments"),
                 nav_item("Customers", "users", "/customers"),
-                nav_item("Staff", "user-cog", "/staff"),
-                nav_item("Services", "scissors", "/services"),
+                rx.cond(
+                    AppState.is_master,
+                    rx.fragment(
+                        nav_item("Staff", "user-cog", "/staff"),
+                        nav_item("Services", "scissors", "/services"),
+                    ),
+                    rx.fragment(),
+                ),
                 spacing="1",
                 width="100%",
             ),
-            
             rx.spacer(),
-            
             # Decorative Element
             rx.box(
                 rx.vstack(
@@ -146,17 +155,20 @@ def sidebar():
                     align="center",
                 ),
                 padding="20px",
-                background=f"linear-gradient(180deg, rgba(201, 162, 39, 0.1) 0%, transparent 100%)",
-                border=f"1px solid rgba(201, 162, 39, 0.2)",
+                background="linear-gradient(180deg, rgba(201, 162, 39, 0.1) 0%, transparent 100%)",
+                border="1px solid rgba(201, 162, 39, 0.2)",
                 border_radius="16px",
                 width="100%",
                 text_align="center",
             ),
-            
             # User Profile
             rx.hstack(
                 rx.avatar(
-                    fallback="AD",
+                    fallback=rx.cond(
+                        AppState.is_authenticated,
+                        AppState.user.username[:2].upper(),
+                        "?",
+                    ),
                     size="3",
                     radius="full",
                     style={
@@ -165,18 +177,31 @@ def sidebar():
                     },
                 ),
                 rx.vstack(
-                    rx.text("Admin", size="2", weight="bold", color=styles.WHITE),
-                    rx.text("Manager", size="1", color=styles.GRAY_500),
+                    rx.cond(
+                        AppState.is_authenticated,
+                        rx.text(AppState.user.username, size="2", weight="bold", color=styles.WHITE),
+                        rx.link("Sign In", href="/login", size="2", weight="bold", color=styles.GOLD),
+                    ),
+                    rx.cond(
+                        AppState.is_master,
+                        rx.text("Master Admin", size="1", color=styles.GOLD),
+                        rx.text("Owner", size="1", color=styles.GRAY_500),
+                    ),
                     spacing="0",
                     align="start",
                 ),
                 rx.spacer(),
-                rx.icon_button(
-                    rx.icon("log-out", size=16),
-                    variant="ghost",
-                    color_scheme="gray",
-                    size="2",
-                    cursor="pointer",
+                rx.cond(
+                    AppState.is_authenticated,
+                    rx.icon_button(
+                        rx.icon("log-out", size=16),
+                        variant="ghost",
+                        color_scheme="gray",
+                        size="2",
+                        cursor="pointer",
+                        on_click=AppState.logout,
+                    ),
+                    rx.fragment(),
                 ),
                 width="100%",
                 align="center",
@@ -186,7 +211,6 @@ def sidebar():
                 border_radius="12px",
                 border=styles.BORDER_SUBTLE,
             ),
-            
             height="100%",
             width="100%",
             spacing="2",

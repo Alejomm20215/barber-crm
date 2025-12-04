@@ -10,19 +10,19 @@ from config.health import healthz, livez, readyz
 
 # Create API router
 router = DefaultRouter()
-router.register(r'businesses', BusinessViewSet, basename='business')
-router.register(r'staff', StaffViewSet, basename='staff')
-router.register(r'customers', CustomerViewSet, basename='customer')
-router.register(r'services', ServiceViewSet, basename='service')
-router.register(r'appointments', AppointmentViewSet, basename='appointment')
+router.register(r"businesses", BusinessViewSet, basename="business")
+router.register(r"staff", StaffViewSet, basename="staff")
+router.register(r"customers", CustomerViewSet, basename="customer")
+router.register(r"services", ServiceViewSet, basename="service")
+router.register(r"appointments", AppointmentViewSet, basename="appointment")
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('api/', include(router.urls)),
-    path('api-auth/', include('rest_framework.urls')),
-    
+    path("admin/", admin.site.urls),
+    path("api/", include(router.urls)),
+    path("api/auth/", include("apps.accounts.urls")),
+    path("api-auth/", include("rest_framework.urls")),
     # Health checks
-    path('healthz/', healthz, name='healthz'),
-    path('livez/', livez, name='livez'),
-    path('readyz/', readyz, name='readyz'),
+    path("healthz/", healthz, name="healthz"),
+    path("livez/", livez, name="livez"),
+    path("readyz/", readyz, name="readyz"),
 ]

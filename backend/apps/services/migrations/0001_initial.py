@@ -5,32 +5,51 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('businesses', '0001_initial'),
+        ("businesses", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Service',
+            name="Service",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('description', models.TextField(blank=True, null=True)),
-                ('price', models.DecimalField(decimal_places=2, max_digits=10)),
-                ('duration', models.IntegerField(help_text='Duration in minutes')),
-                ('is_active', models.BooleanField(default=True)),
-                ('category', models.CharField(blank=True, max_length=100, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('business', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='services', to='businesses.business')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("description", models.TextField(blank=True, null=True)),
+                ("price", models.DecimalField(decimal_places=2, max_digits=10)),
+                ("duration", models.IntegerField(help_text="Duration in minutes")),
+                ("is_active", models.BooleanField(default=True)),
+                ("category", models.CharField(blank=True, max_length=100, null=True)),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                (
+                    "business",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="services",
+                        to="businesses.business",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'services',
-                'ordering': ['name'],
-                'indexes': [models.Index(fields=['business', 'is_active'], name='services_busines_302365_idx')],
+                "db_table": "services",
+                "ordering": ["name"],
+                "indexes": [
+                    models.Index(
+                        fields=["business", "is_active"],
+                        name="services_busines_302365_idx",
+                    )
+                ],
             },
         ),
     ]

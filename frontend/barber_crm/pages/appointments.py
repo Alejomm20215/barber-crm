@@ -1,9 +1,10 @@
 """Appointments Page with CRUD Operations"""
 
 import reflex as rx
-from barber_crm.state import AppState
+
 from barber_crm import styles
 from barber_crm.layout import layout
+from barber_crm.state import AppState
 
 
 def appointment_modal():
@@ -27,9 +28,7 @@ def appointment_modal():
                     ),
                     width="100%",
                 ),
-                
                 rx.divider(color=styles.GRAY_800, margin_y="16px"),
-                
                 rx.vstack(
                     # Customer Select
                     rx.vstack(
@@ -58,7 +57,6 @@ def appointment_modal():
                         spacing="2",
                         width="100%",
                     ),
-                    
                     # Staff Select
                     rx.vstack(
                         rx.text("Barber / Staff", size="2", weight="medium", color=styles.GRAY_300),
@@ -86,7 +84,6 @@ def appointment_modal():
                         spacing="2",
                         width="100%",
                     ),
-                    
                     # Service Select
                     rx.vstack(
                         rx.text("Service", size="2", weight="medium", color=styles.GRAY_300),
@@ -114,7 +111,6 @@ def appointment_modal():
                         spacing="2",
                         width="100%",
                     ),
-                    
                     # Date & Time
                     rx.hstack(
                         rx.vstack(
@@ -154,11 +150,9 @@ def appointment_modal():
                         spacing="4",
                         width="100%",
                     ),
-                    
                     spacing="4",
                     width="100%",
                 ),
-                
                 rx.hstack(
                     rx.button(
                         "Cancel",
@@ -182,13 +176,12 @@ def appointment_modal():
                     width="100%",
                     margin_top="24px",
                 ),
-                
                 spacing="0",
                 width="100%",
             ),
             style={
                 "background": styles.CARD_BG,
-                "border": f"1px solid rgba(201, 162, 39, 0.3)",
+                "border": "1px solid rgba(201, 162, 39, 0.3)",
                 "border_radius": "20px",
                 "padding": "24px",
                 "max_width": "480px",
@@ -207,10 +200,10 @@ def status_badge(status: str):
         "cancelled": styles.RED,
     }
     color = colors.get(status.lower(), styles.GRAY_500) if isinstance(status, str) else styles.GOLD
-    
+
     return rx.box(
         rx.text(status, size="1", weight="bold", color=color),
-        background=f"rgba(201, 162, 39, 0.1)",
+        background="rgba(201, 162, 39, 0.1)",
         border=f"1px solid {color}",
         border_radius="6px",
         padding="4px 10px",
@@ -240,7 +233,6 @@ def appointment_card(appt):
                 padding_right="20px",
                 border_right=styles.BORDER_SUBTLE,
             ),
-            
             # Customer & Service Info
             rx.hstack(
                 rx.avatar(
@@ -270,18 +262,15 @@ def appointment_card(appt):
                 flex="1",
                 padding_left="20px",
             ),
-            
             rx.spacer(),
-            
             # Status Badge
             rx.box(
                 rx.text(appt.status, size="1", weight="bold", color=styles.GOLD),
                 background="rgba(201, 162, 39, 0.1)",
-                border=f"1px solid rgba(201, 162, 39, 0.3)",
+                border="1px solid rgba(201, 162, 39, 0.3)",
                 border_radius="6px",
                 padding="4px 12px",
             ),
-            
             # Actions
             rx.menu.root(
                 rx.menu.trigger(
@@ -302,7 +291,6 @@ def appointment_card(appt):
                     border=styles.BORDER_SUBTLE,
                 ),
             ),
-            
             width="100%",
             align="center",
         ),
@@ -317,7 +305,6 @@ def appointments_content():
             f"{AppState.total_appointments} bookings",
             styles.gold_button("Book Appointment", "calendar-plus", on_click=AppState.toggle_appointment_modal),
         ),
-        
         # Quick Stats
         rx.hstack(
             rx.hstack(
@@ -345,7 +332,6 @@ def appointments_content():
             spacing="4",
             margin_bottom="24px",
         ),
-        
         # Appointments List
         rx.cond(
             AppState.total_appointments > 0,
@@ -361,7 +347,6 @@ def appointments_content():
                 styles.gold_button("Book Appointment", "calendar-plus", on_click=AppState.toggle_appointment_modal),
             ),
         ),
-        
         appointment_modal(),
         width="100%",
     )

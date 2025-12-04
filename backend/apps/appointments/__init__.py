@@ -1,1 +1,1 @@
-default_app_config = 'apps.appointments.apps.AppointmentsConfig'
+default_app_config = "apps.appointments.apps.AppointmentsConfig"

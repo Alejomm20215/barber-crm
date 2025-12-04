@@ -5,34 +5,59 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [
-        ('businesses', '0001_initial'),
+        ("businesses", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Customer',
+            name="Customer",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=255)),
-                ('phone', models.CharField(max_length=20, unique=True)),
-                ('email', models.EmailField(blank=True, max_length=254, null=True)),
-                ('notes', models.TextField(blank=True, null=True)),
-                ('preferences', models.JSONField(blank=True, default=dict)),
-                ('total_visits', models.IntegerField(default=0)),
-                ('total_spent', models.DecimalField(decimal_places=2, default=0.0, max_digits=10)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('last_visit', models.DateTimeField(blank=True, null=True)),
-                ('business', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='customers', to='businesses.business')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=255)),
+                ("phone", models.CharField(max_length=20, unique=True)),
+                ("email", models.EmailField(blank=True, max_length=254, null=True)),
+                ("notes", models.TextField(blank=True, null=True)),
+                ("preferences", models.JSONField(blank=True, default=dict)),
+                ("total_visits", models.IntegerField(default=0)),
+                (
+                    "total_spent",
+                    models.DecimalField(decimal_places=2, default=0.0, max_digits=10),
+                ),
+                ("created_at", models.DateTimeField(auto_now_add=True)),
+                ("updated_at", models.DateTimeField(auto_now=True)),
+                ("last_visit", models.DateTimeField(blank=True, null=True)),
+                (
+                    "business",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="customers",
+                        to="businesses.business",
+                    ),
+                ),
             ],
             options={
-                'db_table': 'customers',
-                'ordering': ['-created_at'],
-                'indexes': [models.Index(fields=['business', 'phone'], name='customers_busines_54b7e1_idx'), models.Index(fields=['business', 'name'], name='customers_busines_813b1f_idx')],
+                "db_table": "customers",
+                "ordering": ["-created_at"],
+                "indexes": [
+                    models.Index(
+                        fields=["business", "phone"],
+                        name="customers_busines_54b7e1_idx",
+                    ),
+                    models.Index(
+                        fields=["business", "name"], name="customers_busines_813b1f_idx"
+                    ),
+                ],
             },
         ),
     ]

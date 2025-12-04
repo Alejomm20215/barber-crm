@@ -1,9 +1,10 @@
 """Customers Page with CRUD Operations"""
 
 import reflex as rx
-from barber_crm.state import AppState
+
 from barber_crm import styles
 from barber_crm.layout import layout
+from barber_crm.state import AppState
 
 
 def customer_modal():
@@ -27,9 +28,7 @@ def customer_modal():
                     ),
                     width="100%",
                 ),
-                
                 rx.divider(color=styles.GRAY_800, margin_y="16px"),
-                
                 rx.vstack(
                     rx.vstack(
                         rx.text("Full Name", size="2", weight="medium", color=styles.GRAY_300),
@@ -87,7 +86,6 @@ def customer_modal():
                     spacing="4",
                     width="100%",
                 ),
-                
                 rx.hstack(
                     rx.button(
                         "Cancel",
@@ -111,13 +109,12 @@ def customer_modal():
                     width="100%",
                     margin_top="24px",
                 ),
-                
                 spacing="0",
                 width="100%",
             ),
             style={
                 "background": styles.CARD_BG,
-                "border": f"1px solid rgba(201, 162, 39, 0.3)",
+                "border": "1px solid rgba(201, 162, 39, 0.3)",
                 "border_radius": "20px",
                 "padding": "24px",
                 "max_width": "440px",
@@ -202,7 +199,6 @@ def customers_content():
             f"{AppState.total_customers} total clients",
             styles.gold_button("Add Customer", "user-plus", on_click=AppState.toggle_customer_modal),
         ),
-        
         # Customer Grid
         rx.cond(
             AppState.total_customers > 0,
@@ -219,7 +215,6 @@ def customers_content():
                 styles.gold_button("Add Customer", "user-plus", on_click=AppState.toggle_customer_modal),
             ),
         ),
-        
         customer_modal(),
         width="100%",
     )

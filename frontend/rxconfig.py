@@ -1,7 +1,8 @@
 """Barbershop CRM Frontend - Reflex App Configuration"""
 
-import reflex as rx
 import os
+
+import reflex as rx
 
 # Check if running in Docker
 IN_DOCKER = os.environ.get("IN_DOCKER", "false").lower() == "true"

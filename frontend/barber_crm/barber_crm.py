@@ -1,12 +1,16 @@
 """Barbershop CRM - Premium Appointment Management"""
 
 import reflex as rx
+
 from barber_crm.pages import (
-    dashboard,
-    customers_page,
-    staff_page,
-    services_page,
     appointments_page,
+    customers_page,
+    dashboard,
+    landing_page,
+    login_page,
+    register_page,
+    services_page,
+    staff_page,
 )
 
 # App Configuration
@@ -29,8 +33,14 @@ app = rx.App(
     },
 )
 
-# Routes
-app.add_page(dashboard, route="/", title="Dashboard | BarberCRM")
+# Public Routes
+app.add_page(landing_page, route="/", title="Welcome | BarberCRM")
+app.add_page(landing_page, route="/welcome", title="Welcome | BarberCRM")
+app.add_page(login_page, route="/login", title="Login | BarberCRM")
+app.add_page(register_page, route="/register", title="Register | BarberCRM")
+
+# App Routes (protected)
+app.add_page(dashboard, route="/dashboard", title="Dashboard | BarberCRM")
 app.add_page(customers_page, route="/customers", title="Customers | BarberCRM")
 app.add_page(staff_page, route="/staff", title="Staff | BarberCRM")
 app.add_page(services_page, route="/services", title="Services | BarberCRM")

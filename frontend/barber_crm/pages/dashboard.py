@@ -1,9 +1,10 @@
 """Premium Dashboard Page"""
 
 import reflex as rx
-from barber_crm.state import AppState
+
 from barber_crm import styles
 from barber_crm.layout import layout
+from barber_crm.state import AppState
 
 
 def quick_action_card(title: str, icon: str, count, subtitle: str, href: str):
@@ -16,9 +17,9 @@ def quick_action_card(title: str, icon: str, count, subtitle: str, href: str):
                         rx.icon(icon, size=28, color=styles.GOLD),
                         width="56px",
                         height="56px",
-                        background=f"linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.05) 100%)",
+                        background="linear-gradient(135deg, rgba(201, 162, 39, 0.15) 0%, rgba(201, 162, 39, 0.05) 100%)",
                         border_radius="14px",
-                        border=f"1px solid rgba(201, 162, 39, 0.2)",
+                        border="1px solid rgba(201, 162, 39, 0.2)",
                     ),
                     rx.spacer(),
                     rx.vstack(
@@ -73,7 +74,7 @@ def recent_appointment_item(appt):
             rx.box(
                 rx.text(appt.status, size="1", weight="bold", color=styles.GOLD),
                 background="rgba(201, 162, 39, 0.1)",
-                border=f"1px solid rgba(201, 162, 39, 0.3)",
+                border="1px solid rgba(201, 162, 39, 0.3)",
                 border_radius="6px",
                 padding="2px 8px",
             ),
@@ -126,18 +127,18 @@ def dashboard_content():
             align="end",
             margin_bottom="32px",
         ),
-        
         # Stats Grid
         rx.grid(
             quick_action_card("Total Customers", "users", AppState.total_customers, "clients", "/customers"),
-            quick_action_card("Appointments", "calendar-clock", AppState.total_appointments, "bookings", "/appointments"),
+            quick_action_card(
+                "Appointments", "calendar-clock", AppState.total_appointments, "bookings", "/appointments"
+            ),
             quick_action_card("Staff Members", "user-cog", AppState.total_staff, "team", "/staff"),
             quick_action_card("Services", "scissors", AppState.total_services, "offerings", "/services"),
             columns="4",
             spacing="6",
             width="100%",
         ),
-        
         # Recent Activity Section
         rx.hstack(
             rx.vstack(
@@ -162,7 +163,6 @@ def dashboard_content():
             margin_top="40px",
             margin_bottom="20px",
         ),
-        
         rx.cond(
             AppState.total_appointments > 0,
             rx.vstack(
@@ -204,7 +204,6 @@ def dashboard_content():
                 width="100%",
             ),
         ),
-        
         width="100%",
         spacing="0",
         on_mount=AppState.load_businesses,

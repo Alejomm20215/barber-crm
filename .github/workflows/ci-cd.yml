@@ -16,10 +16,10 @@ jobs:
   security-scan:
     name: Security Scan
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Run Trivy vulnerability scanner
       uses: aquasecurity/trivy-action@master
       with:
@@ -27,12 +27,12 @@ jobs:
         scan-ref: './backend'
         format: 'sarif'
         output: 'trivy-results.sarif'
-    
+
     - name: Upload Trivy results to GitHub Security
       uses: github/codeql-action/upload-sarif@v4
       with:
         sarif_file: 'trivy-results.sarif'
-    
+
     - name: Check for secrets
       uses: trufflesecurity/trufflehog@main
       with:
@@ -44,31 +44,31 @@ jobs:
   lint:
     name: Lint Code
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Set up Python
       uses: actions/setup-python@v6
       with:
         python-version: '3.11'
-    
+
     - name: Install linting tools
       run: |
         pip install flake8 black isort
-    
+
     - name: Run Black
       run: |
         cd backend
         black --check .
       continue-on-error: true
-    
+
     - name: Run isort
       run: |
         cd backend
         isort --check-only .
       continue-on-error: true
-    
+
     - name: Run Flake8
       run: |
         cd backend
@@ -79,7 +79,7 @@ jobs:
     name: Run Tests
     runs-on: ubuntu-latest
     needs: [security-scan, lint]
-    
+
     services:
       postgres:
         image: postgres:15
@@ -93,7 +93,7 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-      
+
       redis:
         image: redis:7-alpine
         options: >-
@@ -103,22 +103,22 @@ jobs:
           --health-retries 5
         ports:
           - 6379:6379
-    
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Set up Python
       uses: actions/setup-python@v6
       with:
         python-version: '3.11'
         cache: 'pip'
-    
+
     - name: Install dependencies
       run: |
         cd backend
         pip install -r requirements.txt
         pip install -r requirements-dev.txt
-    
+
     - name: Run migrations
       env:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
@@ -128,7 +128,7 @@ jobs:
       run: |
         cd backend
         python manage.py migrate
-    
+
     - name: Run tests with coverage
       env:
         DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db
@@ -138,14 +138,14 @@ jobs:
       run: |
         cd backend
         pytest --cov=apps --cov-report=xml --cov-report=term-missing --cov-fail-under=80
-    
+
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v5
       with:
         file: ./backend/coverage.xml
         fail_ci_if_error: true
         flags: backend
-    
+
     - name: Comment PR with coverage
       if: github.event_name == 'pull_request'
       uses: py-cov-action/python-coverage-comment-action@v3
@@ -160,25 +160,25 @@ jobs:
     needs: test
     runs-on: ubuntu-latest
     if: github.event_name == 'push' && github.ref == 'refs/heads/develop'
-    
+
     permissions:
       contents: read
       packages: write
       security-events: write
-    
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v2
-    
+
     - name: Log in to Container Registry
       uses: docker/login-action@v3
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
         password: ${{ secrets.GITHUB_TOKEN }}
-    
+
     - name: Extract metadata
       id: meta
       uses: docker/metadata-action@v4
@@ -188,7 +188,7 @@ jobs:
           type=ref,event=branch
           type=sha,prefix={{branch}}-
           type=semver,pattern={{version}}
-    
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
@@ -198,14 +198,14 @@ jobs:
         labels: ${{ steps.meta.outputs.labels }}
         cache-from: type=gha
         cache-to: type=gha,mode=max
-    
+
     - name: Run Trivy on Docker image
       uses: aquasecurity/trivy-action@master
       with:
         image-ref: ${{ steps.meta.outputs.tags }}
         format: 'sarif'
         output: 'trivy-image-results.sarif'
-    
+
     - name: Upload Trivy image results
       uses: github/codeql-action/upload-sarif@v4
       with:
@@ -220,30 +220,30 @@ jobs:
     environment:
       name: staging
       url: https://staging.barber-crm.example.com
-    
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Set up kubectl
       uses: azure/setup-kubectl@v4
-    
+
     - name: Configure kubectl
       run: |
         echo "${{ secrets.KUBECONFIG_STAGING }}" | base64 -d > kubeconfig
         export KUBECONFIG=kubeconfig
-    
+
     - name: Update image in staging deployment
       run: |
         export KUBECONFIG=kubeconfig
         kubectl set image deployment/backend \
           backend=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:develop-${{ github.sha }} \
           -n barber-crm-staging
-    
+
     - name: Wait for rollout
       run: |
         export KUBECONFIG=kubeconfig
         kubectl rollout status deployment/backend -n barber-crm-staging --timeout=5m
-    
+
     - name: Run smoke tests
       run: |
         # Wait for service to be ready
@@ -261,41 +261,41 @@ jobs:
     environment:
       name: production
       url: https://api.barber-crm.example.com
-    
+
     steps:
     - uses: actions/checkout@v3
-    
+
     - name: Set up kubectl
       uses: azure/setup-kubectl@v4
-    
+
     - name: Configure kubectl
       run: |
         echo "${{ secrets.KUBECONFIG_PRODUCTION }}" | base64 -d > kubeconfig
         export KUBECONFIG=kubeconfig
-    
+
     - name: Update image in production deployment
       run: |
         export KUBECONFIG=kubeconfig
         kubectl set image deployment/backend \
           backend=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:main-${{ github.sha }} \
           -n barber-crm
-    
+
     - name: Wait for rollout
       run: |
         export KUBECONFIG=kubeconfig
         kubectl rollout status deployment/backend -n barber-crm --timeout=10m
-    
+
     - name: Verify deployment
       run: |
         export KUBECONFIG=kubeconfig
         kubectl get pods -n barber-crm
-    
+
     - name: Run smoke tests
       run: |
         sleep 10
         curl -f https://api.barber-crm.example.com/healthz/ || exit 1
         curl -f https://api.barber-crm.example.com/readyz/ || exit 1
-    
+
     - name: Notify deployment
       if: success()
       run: |

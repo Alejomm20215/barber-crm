@@ -1,0 +1,52 @@
+# Pre-commit hooks for Barber CRM Frontend
+# Install: pip install pre-commit && pre-commit install
+# Run manually: pre-commit run --all-files
+
+repos:
+  # Ruff - Fast Python linter and formatter
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.8.1
+    hooks:
+      # Linter
+      - id: ruff
+        args: [--fix, --exit-non-zero-on-fix]
+        types_or: [python, pyi]
+      # Formatter
+      - id: ruff-format
+        types_or: [python, pyi]
+
+  # Custom Reflex Linter
+  - repo: local
+    hooks:
+      - id: reflex-linter
+        name: Reflex Linter
+        description: Check for common Reflex mistakes (weights, icons, rx.cond, etc.)
+        entry: python scripts/reflex_linter.py
+        language: python
+        types: [python]
+        files: ^barber_crm/
+        pass_filenames: true
+        verbose: true
+
+  # General hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: \.md$
+      - id: end-of-file-fixer
+        exclude: \.md$
+      - id: check-yaml
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: debug-statements
+      - id: check-toml
+
+  # Check for secrets
+#   - repo: https://github.com/Yelp/detect-secrets
+#     rev: v1.5.0
+#     hooks:
+#       - id: detect-secrets
+#         args: ['--baseline', '.secrets.baseline']
+#         exclude: (\.env\.example|package-lock\.json)

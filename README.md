@@ -8,16 +8,7 @@ A production-ready Barbershop CRM built with **Django**, **Supabase**, **SQLAlch
 
 **🚀 New to this project? Start here:**
 
-1. **[QUICKSTART.md](QUICKSTART.md)** ⭐ - Get up and running in 10 minutes
-2. **[COMPLETE_OVERVIEW.md](COMPLETE_OVERVIEW.md)** - Full project summary
-3. **[TESTING_SECURITY.md](TESTING_SECURITY.md)** - Testing & security details
-
-**📖 Additional Documentation:**
-
-- **[PROJECT_SUMMARY.md](PROJECT_SUMMARY.md)** - What's been built
-- **[SECURITY.md](SECURITY.md)** - Security policy
-- **[BRANCH_PROTECTION.md](BRANCH_PROTECTION.md)** - GitHub setup guide
-- **[SUPABASE_RLS.md](SUPABASE_RLS.md)** - Database RLS policies
+**[QUICKSTART.md](QUICKSTART.md)** ⭐ - Get up and running in 10 minutes
 
 ---
 
@@ -266,28 +257,6 @@ barber-crm/
 └── docker-compose.yml
 ```
 
-## 🛠️ Tech Stack Details
-
-### Backend
-- **Django 5.0+** - Web framework
-- **Django REST Framework** - API
-- **SQLAlchemy** - Advanced ORM layer
-- **Celery** - Async task processing
-- **Redis** - Caching & message broker
-- **Gunicorn** - WSGI server
-
-### Frontend
-- **Reflex** - Python-based reactive UI framework
-
-### Infrastructure
-- **Docker** - Containerization
-- **Kubernetes** - Orchestration
-- **GitHub Actions** - CI/CD
-- **Nginx Ingress** - Load balancing
-
-### Database
-- **Supabase (PostgreSQL)** - Managed database with RLS
-
 ## 🔧 Development Commands
 
 ### Django
@@ -338,56 +307,10 @@ docker-compose down
 - **Django Admin**: http://localhost:8000/admin - Database management
 - **Health Endpoints**: `/healthz/`, `/livez/`, `/readyz/`
 
-## 🔒 Security Features
-
-- ✅ Row Level Security (RLS) via Supabase
-- ✅ Multi-tenant data isolation
-- ✅ Environment-based secrets
-- ✅ K8s secrets management
-- ✅ CORS protection
-- ✅ CSRF protection
-- ✅ Authentication required for all API endpoints
-
-## 📝 MVP Features
-
-### Backend ✅
-- [x] Business CRUD with multi-tenant support
-- [x] Staff management with roles
-- [x] Customer tracking with visit history
-- [x] Service catalog
-- [x] Appointment booking system
-- [x] Supabase integration
-- [x] RLS-enforced isolation
-- [x] REST API with DRF
-- [x] Health check endpoints
-
-### Frontend 🚧
-- [ ] Dashboard UI
-- [ ] Customer list + add/edit
-- [ ] Appointment scheduler
-- [ ] Staff management
-- [ ] Service management
-
-### DevOps ✅
-- [x] Docker containerization
-- [x] Docker Compose for local dev
-- [x] Kubernetes manifests
-- [x] Horizontal Pod Autoscaler
-- [x] CI/CD pipeline
-- [x] Health probes
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests
-5. Submit a pull request
-
 ## 📄 License
 
 MIT License
 
 ## 👨‍💻 Author
 
-Built with ❤️ for modern barbershop management
+Built by Maverick.
