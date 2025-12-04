@@ -133,8 +133,13 @@ def sidebar():
                 nav_item("Dashboard", "layout-dashboard", "/dashboard"),
                 nav_item("Appointments", "calendar-clock", "/appointments"),
                 nav_item("Customers", "users", "/customers"),
-                nav_item("Staff", "user-cog", "/staff"),
-                nav_item("Services", "scissors", "/services"),
+                rx.cond(
+                    AppState.is_master,
+                    rx.fragment(
+                        nav_item("Staff", "user-cog", "/staff"),
+                        nav_item("Services", "scissors", "/services"),
+                    ),
+                ),
                 spacing="1",
                 width="100%",
             ),

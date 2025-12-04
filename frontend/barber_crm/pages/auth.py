@@ -6,14 +6,12 @@ from ..state import AppState
 from ..styles import (
     BLACK,
     BORDER_SUBTLE,
-    CARD_BG,
     DARK_BG,
     GOLD,
     GOLD_GRADIENT,
     GRAY_300,
     GRAY_500,
     GRAY_700,
-    GRAY_800,
     SHADOW_GOLD,
     WHITE,
 )
@@ -324,24 +322,55 @@ def register_page() -> rx.Component:
 
 
 def landing_page() -> rx.Component:
-    """Public landing page."""
+    """Public landing page with premium design."""
     return rx.box(
-        # Hero Section
-        rx.center(
-            rx.vstack(
-                # Animated scissors icon
-                rx.center(
-                    rx.icon("scissors", size=64, color=GOLD),
-                    width="120px",
-                    height="120px",
-                    background="linear-gradient(135deg, rgba(201, 162, 39, 0.2) 0%, rgba(201, 162, 39, 0.05) 100%)",
-                    border_radius="50%",
-                    border="2px solid rgba(201, 162, 39, 0.4)",
-                    margin_bottom="2rem",
+        # Navbar
+        rx.hstack(
+            rx.hstack(
+                rx.icon("scissors", size=24, color=GOLD),
+                rx.text("BARBER CRM", size="3", weight="bold", letter_spacing="2px"),
+                align="center",
+                spacing="2",
+            ),
+            rx.spacer(),
+            rx.hstack(
+                rx.link("Features", href="#features", color=GRAY_300, size="2", weight="medium"),
+                rx.link("Pricing", href="#pricing", color=GRAY_300, size="2", weight="medium"),
+                rx.link("Sign In", href="/login", color=WHITE, size="2", weight="bold"),
+                rx.link(
+                    rx.button(
+                        "Get Started",
+                        background=GOLD,
+                        color=BLACK,
+                        size="2",
+                        radius="full",
+                        font_weight="bold",
+                        _hover={"opacity": 0.9, "transform": "scale(1.05)"},
+                    ),
+                    href="/register",
                 ),
-                # Main heading
+                spacing="6",
+                align="center",
+                display=["none", "none", "flex", "flex"],
+            ),
+            width="100%",
+            padding="24px 48px",
+            position="absolute",
+            top="0",
+            z_index="10",
+        ),
+        # Hero Section
+        rx.box(
+            rx.vstack(
                 rx.heading(
-                    "BARBER CRM",
+                    "Elevate Your Craft",
+                    size="9",
+                    weight="bold",
+                    color=WHITE,
+                    line_height="1.1",
+                ),
+                rx.heading(
+                    "Manage Your Business",
                     size="9",
                     weight="bold",
                     style={
@@ -349,87 +378,84 @@ def landing_page() -> rx.Component:
                         "background_clip": "text",
                         "-webkit-background-clip": "text",
                         "-webkit-text-fill-color": "transparent",
-                        "letter_spacing": "4px",
                     },
+                    line_height="1.1",
                 ),
                 rx.text(
-                    "Premium Barbershop Management",
-                    size="5",
+                    "The premium CRM solution designed exclusively for modern barbershops. Streamline appointments, manage staff, and grow your client base.",
+                    size="4",
                     color=GRAY_300,
-                    margin_top="0.5rem",
+                    max_width="600px",
+                    margin_top="24px",
+                    line_height="1.6",
                 ),
-                rx.text(
-                    "Streamline appointments, manage staff, and grow your business",
-                    size="3",
-                    color=GRAY_500,
-                    text_align="center",
-                    max_width="400px",
-                    margin_top="1rem",
-                ),
-                # CTA Buttons
                 rx.hstack(
                     rx.link(
                         rx.button(
-                            rx.hstack(
-                                rx.text("Get Started", weight="bold"),
-                                rx.icon("arrow-right", size=18),
-                                spacing="2",
-                            ),
-                            background=GOLD_GRADIENT,
+                            "Start Free Trial",
+                            size="4",
+                            background=GOLD,
                             color=BLACK,
-                            padding="1rem 2rem",
-                            border_radius="0.75rem",
-                            cursor="pointer",
-                            font_size="1rem",
-                            _hover={"transform": "scale(1.02)", "box_shadow": SHADOW_GOLD},
+                            radius="full",
+                            font_weight="bold",
+                            padding="24px 48px",
+                            _hover={"opacity": 0.9, "transform": "translateY(-2px)"},
                         ),
                         href="/register",
                     ),
                     rx.link(
                         rx.button(
-                            rx.text("Sign In", weight="medium"),
-                            background="transparent",
+                            "View Demo",
+                            size="4",
+                            variant="outline",
                             color=WHITE,
-                            border=BORDER_SUBTLE,
-                            padding="1rem 2rem",
-                            border_radius="0.75rem",
-                            cursor="pointer",
-                            font_size="1rem",
-                            _hover={"background": GRAY_800, "border_color": GOLD},
+                            border_color=WHITE,
+                            radius="full",
+                            font_weight="bold",
+                            padding="24px 48px",
+                            _hover={"background": "rgba(255,255,255,0.1)", "transform": "translateY(-2px)"},
                         ),
-                        href="/login",
+                        href="#demo",
                     ),
                     spacing="4",
-                    margin_top="2.5rem",
+                    margin_top="48px",
                 ),
-                spacing="1",
-                align="center",
+                align="start",
+                justify="center",
+                height="100vh",
+                padding="0 10%",
+                max_width="1400px",
+                margin="0 auto",
             ),
-            min_height="70vh",
+            background="linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('/hero.png')",
+            background_size="cover",
+            background_position="center",
+            width="100%",
         ),
         # Features Section
         rx.box(
             rx.vstack(
-                rx.text("FEATURES", size="1", color=GOLD, weight="bold", letter_spacing="3px"),
-                rx.heading("Everything you need", size="7", color=WHITE, weight="bold"),
+                rx.text("FEATURES", color=GOLD, letter_spacing="2px", weight="bold", size="2"),
+                rx.heading("Everything you need to run your shop", size="8", color=WHITE, margin_bottom="48px"),
                 rx.grid(
-                    feature_card("calendar-clock", "Appointments", "Easy booking and scheduling for your clients"),
-                    feature_card("users", "Customer Management", "Track visits, preferences, and history"),
-                    feature_card("user-cog", "Staff Management", "Manage your team and their schedules"),
-                    feature_card("scissors", "Services", "Define services, pricing, and durations"),
-                    feature_card("chart-bar", "Analytics", "Insights to grow your business"),
-                    feature_card("shield-check", "Secure", "Your data is safe and protected"),
-                    columns="3",
-                    spacing="6",
+                    feature_card(
+                        "calendar-clock",
+                        "Smart Scheduling",
+                        "Effortless appointment management with automated reminders.",
+                    ),
+                    feature_card("users", "Client Profiles", "Detailed history and preferences for every client."),
+                    feature_card("chart-bar", "Analytics", "Real-time insights into your business performance."),
+                    feature_card("smartphone", "Mobile Ready", "Manage your shop from anywhere, on any device."),
+                    columns="2",
+                    spacing="8",
                     width="100%",
                 ),
-                spacing="6",
-                align="center",
-                max_width="1000px",
+                max_width="1200px",
                 margin="0 auto",
+                padding="100px 24px",
             ),
-            padding="4rem 2rem",
-            background=DARK_BG,
+            id="features",
+            background=BLACK,
         ),
         # Footer
         rx.center(
@@ -445,9 +471,8 @@ def landing_page() -> rx.Component:
             ),
             padding="2rem",
             border_top=BORDER_SUBTLE,
+            background=BLACK,
         ),
-        min_height="100vh",
-        background=f"linear-gradient(180deg, {BLACK} 0%, {DARK_BG} 50%, {BLACK} 100%)",
     )
 
 
@@ -455,21 +480,14 @@ def feature_card(icon: str, title: str, description: str) -> rx.Component:
     """Feature card for landing page."""
     return rx.box(
         rx.vstack(
-            rx.center(
-                rx.icon(icon, size=28, color=GOLD),
-                width="56px",
-                height="56px",
-                background="rgba(201, 162, 39, 0.1)",
-                border_radius="12px",
-                border="1px solid rgba(201, 162, 39, 0.2)",
-            ),
-            rx.text(title, size="3", color=WHITE, weight="bold"),
-            rx.text(description, size="2", color=GRAY_500, text_align="center"),
+            rx.icon(icon, size=32, color=GOLD),
+            rx.heading(title, size="4", color=WHITE, weight="bold"),
+            rx.text(description, size="2", color=GRAY_500, line_height="1.6"),
             spacing="3",
-            align="center",
+            align="start",
         ),
-        padding="1.5rem",
-        background=CARD_BG,
+        padding="2rem",
+        background=DARK_BG,
         border=BORDER_SUBTLE,
         border_radius="1rem",
         transition="all 0.3s ease",
