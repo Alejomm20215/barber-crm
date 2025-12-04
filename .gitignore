@@ -10,6 +10,8 @@ build/
 .venv/
 venv/
 ENV/
+backend/.env.docker
+frontend/.env.docker
 
 # Reflex
 .web/
