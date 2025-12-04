@@ -52,6 +52,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         write_only=True, required=True, label="Confirm Password"
     )
     phone = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    business_name = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
@@ -63,6 +64,7 @@ class RegisterSerializer(serializers.ModelSerializer):
             "first_name",
             "last_name",
             "phone",
+            "business_name",
         ]
 
     def validate(self, attrs):
@@ -77,8 +79,9 @@ class RegisterSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data):
-        """Create user with profile."""
+        """Create user with profile and business."""
         phone = validated_data.pop("phone", "")
+        business_name = validated_data.pop("business_name")
         validated_data.pop("password2")
 
         user = User.objects.create_user(
@@ -93,6 +96,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         if phone and hasattr(user, "profile"):
             user.profile.phone = phone
             user.profile.save()
+
+        # Create the business
+        from apps.businesses.models import Business
+
+        Business.objects.create(
+            name=business_name, owner=user, email=user.email, phone=phone
+        )
 
         return user
 

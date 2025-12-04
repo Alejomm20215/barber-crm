@@ -233,6 +233,12 @@ def register_page() -> rx.Component:
                         width="100%",
                     ),
                     auth_input(
+                        placeholder="Business Name",
+                        value=AppState.register_business_name,
+                        on_change=AppState.set_register_business_name,
+                        icon="building-2",
+                    ),
+                    auth_input(
                         placeholder="Username",
                         value=AppState.register_username,
                         on_change=AppState.set_register_username,

@@ -52,7 +52,7 @@ def sidebar():
             # Logo Header
             rx.hstack(
                 rx.center(
-                    rx.icon("scissors", size=24, color=styles.GOLD),
+                    rx.image(src="/logo.svg", width="32px", height="32px"),
                     width="48px",
                     height="48px",
                     background="linear-gradient(135deg, rgba(201, 162, 39, 0.2) 0%, rgba(201, 162, 39, 0.05) 100%)",
@@ -83,47 +83,51 @@ def sidebar():
                 margin_bottom="32px",
             ),
             # Business Selector
-            rx.box(
-                rx.menu.root(
-                    rx.menu.trigger(
-                        rx.hstack(
-                            rx.icon("building-2", size=18, color=styles.GOLD),
-                            rx.text(
-                                AppState.selected_business_name,
-                                size="2",
-                                weight="medium",
-                                color=styles.WHITE,
-                                overflow="hidden",
-                                text_overflow="ellipsis",
-                                white_space="nowrap",
+            rx.cond(
+                AppState.is_master,
+                rx.box(
+                    rx.menu.root(
+                        rx.menu.trigger(
+                            rx.hstack(
+                                rx.icon("building-2", size=18, color=styles.GOLD),
+                                rx.text(
+                                    AppState.selected_business_name,
+                                    size="2",
+                                    weight="medium",
+                                    color=styles.WHITE,
+                                    overflow="hidden",
+                                    text_overflow="ellipsis",
+                                    white_space="nowrap",
+                                ),
+                                rx.spacer(),
+                                rx.icon("chevron-down", size=16, color=styles.GRAY_500),
+                                width="100%",
+                                align="center",
+                                padding="12px 14px",
+                                background=styles.GRAY_900,
+                                border=styles.BORDER_SUBTLE,
+                                border_radius="10px",
+                                cursor="pointer",
+                                transition="all 0.2s ease",
+                                _hover={"border_color": styles.GOLD},
                             ),
-                            rx.spacer(),
-                            rx.icon("chevron-down", size=16, color=styles.GRAY_500),
-                            width="100%",
-                            align="center",
-                            padding="12px 14px",
-                            background=styles.GRAY_900,
+                        ),
+                        rx.menu.content(
+                            rx.foreach(
+                                AppState.businesses,
+                                lambda b: rx.menu.item(
+                                    b.name,
+                                    on_click=lambda: AppState.select_business(b.id, b.name),
+                                ),
+                            ),
+                            background=styles.CARD_BG,
                             border=styles.BORDER_SUBTLE,
-                            border_radius="10px",
-                            cursor="pointer",
-                            transition="all 0.2s ease",
-                            _hover={"border_color": styles.GOLD},
                         ),
                     ),
-                    rx.menu.content(
-                        rx.foreach(
-                            AppState.businesses,
-                            lambda b: rx.menu.item(
-                                b.name,
-                                on_click=lambda: AppState.select_business(b.id, b.name),
-                            ),
-                        ),
-                        background=styles.CARD_BG,
-                        border=styles.BORDER_SUBTLE,
-                    ),
+                    width="100%",
+                    margin_bottom="24px",
                 ),
-                width="100%",
-                margin_bottom="24px",
+                rx.fragment(),
             ),
             # Navigation Links
             rx.vstack(
@@ -133,14 +137,8 @@ def sidebar():
                 nav_item("Dashboard", "layout-dashboard", "/dashboard"),
                 nav_item("Appointments", "calendar-clock", "/appointments"),
                 nav_item("Customers", "users", "/customers"),
-                rx.cond(
-                    AppState.is_master,
-                    rx.fragment(
-                        nav_item("Staff", "user-cog", "/staff"),
-                        nav_item("Services", "scissors", "/services"),
-                    ),
-                    rx.fragment(),
-                ),
+                nav_item("Staff", "user-cog", "/staff"),
+                nav_item("Services", "scissors", "/services"),
                 spacing="1",
                 width="100%",
             ),

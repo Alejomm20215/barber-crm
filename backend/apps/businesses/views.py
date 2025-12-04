@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from .models import Business
 from .serializers import BusinessSerializer
+from rest_framework import permissions
 
 
 class BusinessViewSet(viewsets.ModelViewSet):
@@ -14,28 +15,22 @@ class BusinessViewSet(viewsets.ModelViewSet):
 
     queryset = Business.objects.all()
     serializer_class = BusinessSerializer
+    permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
         """
         Filter businesses based on user role.
-
         - Master accounts: See all businesses
         - Regular users: See only their own businesses
-        - Anonymous: See all (for dev, change in production)
         """
         user = self.request.user
 
-        # Anonymous user - return all for development
+        # Require authentication
         if not user.is_authenticated:
-            return Business.objects.all()
+            return Business.objects.none()
 
         # Check if user is master
-        is_master = False
-        if hasattr(user, "profile"):
-            is_master = user.profile.is_master
-
-        # Master or staff can see all
-        if is_master or user.is_staff:
+        if hasattr(user, "profile") and user.profile.is_master:
             return Business.objects.all()
 
         # Regular users see only their businesses

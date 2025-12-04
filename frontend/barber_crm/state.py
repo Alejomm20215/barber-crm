@@ -8,7 +8,7 @@ import reflex as rx
 from pydantic import BaseModel
 
 # API URL - can be overridden via environment variable
-API_BASE_URL = os.getenv("API_URL", "http://localhost:8000/api")
+API_BASE_URL = os.getenv("API_URL", "https://barber-crm-production-456d.up.railway.app/api")
 
 
 # ============ DATA MODELS ============
@@ -91,6 +91,7 @@ class AuthState(rx.State):
     register_first_name: str = ""
     register_last_name: str = ""
     register_phone: str = ""
+    register_business_name: str = ""
 
     @rx.var
     def auth_headers(self) -> dict:
@@ -114,6 +115,7 @@ class AuthState(rx.State):
         self.register_first_name = ""
         self.register_last_name = ""
         self.register_phone = ""
+        self.register_business_name = ""
 
     async def login(self):
         """Login with username and password."""
@@ -157,8 +159,8 @@ class AuthState(rx.State):
 
     async def register(self):
         """Register a new user."""
-        if not all([self.register_username, self.register_email, self.register_password]):
-            self.auth_error = "Username, email and password are required"
+        if not all([self.register_username, self.register_email, self.register_password, self.register_business_name]):
+            self.auth_error = "Username, email, password and business name are required"
             return
 
         if self.register_password != self.register_password2:
@@ -180,6 +182,7 @@ class AuthState(rx.State):
                         "first_name": self.register_first_name,
                         "last_name": self.register_last_name,
                         "phone": self.register_phone,
+                        "business_name": self.register_business_name,
                     },
                     timeout=10.0,
                 )

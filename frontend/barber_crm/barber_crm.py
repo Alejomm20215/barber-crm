@@ -31,6 +31,9 @@ app = rx.App(
         "background": "#0a0a0a",
         "color": "#ffffff",
     },
+    head_components=[
+        rx.el.link(rel="icon", href="/logo.svg"),
+    ],
 )
 
 # Public Routes
