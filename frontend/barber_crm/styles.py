@@ -26,18 +26,18 @@ GRAY_900 = "#171717"
 GOLD_GRADIENT = f"linear-gradient(135deg, {GOLD} 0%, {GOLD_LIGHT} 50%, {GOLD} 100%)"
 DARK_GRADIENT = f"linear-gradient(180deg, {DARK_BG} 0%, {BLACK} 100%)"
 CARD_GRADIENT = f"linear-gradient(145deg, {CARD_BG} 0%, {GRAY_900} 100%)"
-SHIMMER = f"linear-gradient(90deg, transparent 0%, rgba(201, 162, 39, 0.1) 50%, transparent 100%)"
+SHIMMER = "linear-gradient(90deg, transparent 0%, rgba(201, 162, 39, 0.1) 50%, transparent 100%)"
 
 # ============ SHADOWS ============
 SHADOW_SM = "0 2px 8px rgba(0,0,0,0.3)"
 SHADOW_MD = "0 4px 16px rgba(0,0,0,0.4)"
 SHADOW_LG = "0 8px 32px rgba(0,0,0,0.5)"
-SHADOW_GOLD = f"0 4px 20px rgba(201, 162, 39, 0.2)"
+SHADOW_GOLD = "0 4px 20px rgba(201, 162, 39, 0.2)"
 
 # ============ BORDERS ============
 BORDER_SUBTLE = f"1px solid {GRAY_800}"
 BORDER_GOLD = f"1px solid {GOLD}"
-BORDER_GOLD_SUBTLE = f"1px solid rgba(201, 162, 39, 0.3)"
+BORDER_GOLD_SUBTLE = "1px solid rgba(201, 162, 39, 0.3)"
 
 
 # ============ COMPONENT STYLES ============
@@ -57,16 +57,18 @@ def premium_card(*children, **props):
             "transform": "translateY(-2px)",
         },
     }
-    return rx.box(*children, style={**default_style, **props.get("style", {})}, **{k: v for k, v in props.items() if k != "style"})
+    return rx.box(
+        *children, style={**default_style, **props.get("style", {})}, **{k: v for k, v in props.items() if k != "style"}
+    )
 
 
-def gold_button(text: str, icon: str = None, **props):
+def gold_button(text: str, icon: str | None = None, **props):
     """Primary gold action button"""
     children = []
     if icon:
         children.append(rx.icon(icon, size=18))
     children.append(rx.text(text, weight="bold"))
-    
+
     return rx.button(
         rx.hstack(*children, spacing="2", align="center"),
         background=GOLD_GRADIENT,
@@ -84,17 +86,17 @@ def gold_button(text: str, icon: str = None, **props):
         _active={
             "transform": "scale(0.98)",
         },
-        **props
+        **props,
     )
 
 
-def ghost_button(text: str, icon: str = None, **props):
+def ghost_button(text: str, icon: str | None = None, **props):
     """Secondary ghost button"""
     children = []
     if icon:
         children.append(rx.icon(icon, size=16, color=GRAY_500))
     children.append(rx.text(text, color=GRAY_300))
-    
+
     return rx.button(
         rx.hstack(*children, spacing="2", align="center"),
         background="transparent",
@@ -107,7 +109,7 @@ def ghost_button(text: str, icon: str = None, **props):
             "background": GRAY_800,
             "border_color": GRAY_700,
         },
-        **props
+        **props,
     )
 
 
@@ -127,7 +129,7 @@ def danger_button(text: str, **props):
             "background": RED,
             "color": WHITE,
         },
-        **props
+        **props,
     )
 
 
@@ -140,9 +142,9 @@ def stat_card(title: str, value, icon: str, color: str = GOLD):
                     rx.icon(icon, size=24, color=color),
                     width="48px",
                     height="48px",
-                    background=f"rgba(201, 162, 39, 0.1)",
+                    background="rgba(201, 162, 39, 0.1)",
                     border_radius="12px",
-                    border=f"1px solid rgba(201, 162, 39, 0.2)",
+                    border="1px solid rgba(201, 162, 39, 0.2)",
                 ),
                 rx.spacer(),
                 rx.text(title, color=GRAY_500, size="2", weight="medium"),
@@ -191,7 +193,7 @@ def page_header(title: str, subtitle: str = "", action_button=None):
     )
 
 
-def input_field(placeholder: str, icon: str = None, **props):
+def input_field(placeholder: str, icon: str | None = None, **props):
     """Styled input field"""
     return rx.input(
         placeholder=placeholder,
@@ -203,11 +205,11 @@ def input_field(placeholder: str, icon: str = None, **props):
         width="100%",
         _focus={
             "border_color": GOLD,
-            "box_shadow": f"0 0 0 2px rgba(201, 162, 39, 0.2)",
+            "box_shadow": "0 0 0 2px rgba(201, 162, 39, 0.2)",
             "outline": "none",
         },
         _placeholder={"color": GRAY_500},
-        **props
+        **props,
     )
 
 
@@ -226,7 +228,7 @@ def select_field(placeholder: str, **props):
                 "cursor": "pointer",
             },
         ),
-        **props
+        **props,
     )
 
 

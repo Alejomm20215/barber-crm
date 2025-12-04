@@ -1,9 +1,10 @@
 """Services Page with CRUD Operations"""
 
 import reflex as rx
-from barber_crm.state import AppState
+
 from barber_crm import styles
 from barber_crm.layout import layout
+from barber_crm.state import AppState
 
 
 def service_modal():
@@ -27,9 +28,7 @@ def service_modal():
                     ),
                     width="100%",
                 ),
-                
                 rx.divider(color=styles.GRAY_800, margin_y="16px"),
-                
                 rx.vstack(
                     rx.vstack(
                         rx.text("Service Name", size="2", weight="medium", color=styles.GRAY_300),
@@ -109,7 +108,6 @@ def service_modal():
                     spacing="4",
                     width="100%",
                 ),
-                
                 rx.hstack(
                     rx.button(
                         "Cancel",
@@ -133,13 +131,12 @@ def service_modal():
                     width="100%",
                     margin_top="24px",
                 ),
-                
                 spacing="0",
                 width="100%",
             ),
             style={
                 "background": styles.CARD_BG,
-                "border": f"1px solid rgba(201, 162, 39, 0.3)",
+                "border": "1px solid rgba(201, 162, 39, 0.3)",
                 "border_radius": "20px",
                 "padding": "24px",
                 "max_width": "480px",
@@ -161,10 +158,9 @@ def service_card(service):
                 height="56px",
                 background="rgba(201, 162, 39, 0.1)",
                 border_radius="14px",
-                border=f"1px solid rgba(201, 162, 39, 0.2)",
+                border="1px solid rgba(201, 162, 39, 0.2)",
                 flex_shrink="0",
             ),
-            
             # Service Info
             rx.vstack(
                 rx.heading(service.name, size="4", color=styles.WHITE, weight="bold"),
@@ -180,11 +176,11 @@ def service_card(service):
                 align="start",
                 flex="1",
             ),
-            
             # Price & Duration
             rx.vstack(
                 rx.heading(
-                    "$", service.price,
+                    "$",
+                    service.price,
                     size="6",
                     weight="bold",
                     style={
@@ -203,7 +199,6 @@ def service_card(service):
                 align="end",
                 spacing="1",
             ),
-            
             # Actions
             rx.menu.root(
                 rx.menu.trigger(
@@ -224,7 +219,6 @@ def service_card(service):
                     border=styles.BORDER_SUBTLE,
                 ),
             ),
-            
             width="100%",
             spacing="4",
             align="center",
@@ -240,7 +234,6 @@ def services_content():
             f"{AppState.total_services} services available",
             styles.gold_button("Add Service", "plus", on_click=AppState.toggle_service_modal),
         ),
-        
         # Services List
         rx.cond(
             AppState.total_services > 0,
@@ -256,7 +249,6 @@ def services_content():
                 styles.gold_button("Add Service", "plus", on_click=AppState.toggle_service_modal),
             ),
         ),
-        
         service_modal(),
         width="100%",
     )

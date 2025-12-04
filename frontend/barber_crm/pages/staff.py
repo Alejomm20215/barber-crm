@@ -1,9 +1,10 @@
 """Staff Page with CRUD Operations"""
 
 import reflex as rx
-from barber_crm.state import AppState
+
 from barber_crm import styles
 from barber_crm.layout import layout
+from barber_crm.state import AppState
 
 
 def staff_modal():
@@ -27,9 +28,7 @@ def staff_modal():
                     ),
                     width="100%",
                 ),
-                
                 rx.divider(color=styles.GRAY_800, margin_y="16px"),
-                
                 rx.vstack(
                     rx.vstack(
                         rx.text("Full Name", size="2", weight="medium", color=styles.GRAY_300),
@@ -113,7 +112,6 @@ def staff_modal():
                     spacing="4",
                     width="100%",
                 ),
-                
                 rx.hstack(
                     rx.button(
                         "Cancel",
@@ -137,13 +135,12 @@ def staff_modal():
                     width="100%",
                     margin_top="24px",
                 ),
-                
                 spacing="0",
                 width="100%",
             ),
             style={
                 "background": styles.CARD_BG,
-                "border": f"1px solid rgba(201, 162, 39, 0.3)",
+                "border": "1px solid rgba(201, 162, 39, 0.3)",
                 "border_radius": "20px",
                 "padding": "24px",
                 "max_width": "440px",
@@ -175,7 +172,7 @@ def staff_card(member):
                     rx.box(
                         rx.text(member.role, size="1", weight="bold", color=styles.GOLD),
                         background="rgba(201, 162, 39, 0.1)",
-                        border=f"1px solid rgba(201, 162, 39, 0.3)",
+                        border="1px solid rgba(201, 162, 39, 0.3)",
                         border_radius="20px",
                         padding="4px 12px",
                     ),
@@ -183,13 +180,11 @@ def staff_card(member):
                     spacing="2",
                 ),
                 padding="20px",
-                background=f"linear-gradient(180deg, rgba(201, 162, 39, 0.08) 0%, transparent 100%)",
+                background="linear-gradient(180deg, rgba(201, 162, 39, 0.08) 0%, transparent 100%)",
                 border_radius="12px",
                 width="100%",
             ),
-            
             rx.divider(color=styles.GRAY_800, margin_y="16px"),
-            
             # Contact info
             rx.vstack(
                 rx.hstack(
@@ -209,7 +204,6 @@ def staff_card(member):
                 spacing="3",
                 width="100%",
             ),
-            
             # Actions
             rx.hstack(
                 rx.spacer(),
@@ -240,7 +234,6 @@ def staff_card(member):
                 width="100%",
                 margin_top="12px",
             ),
-            
             spacing="0",
             width="100%",
         ),
@@ -255,7 +248,6 @@ def staff_content():
             f"{AppState.total_staff} team members",
             styles.gold_button("Add Staff", "user-plus", on_click=AppState.toggle_staff_modal),
         ),
-        
         # Staff Grid
         rx.cond(
             AppState.total_staff > 0,
@@ -272,7 +264,6 @@ def staff_content():
                 styles.gold_button("Add Staff Member", "user-plus", on_click=AppState.toggle_staff_modal),
             ),
         ),
-        
         staff_modal(),
         width="100%",
     )

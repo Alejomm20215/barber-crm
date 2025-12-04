@@ -19,6 +19,7 @@ router.register(r'appointments', AppointmentViewSet, basename='appointment')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('api/auth/', include('apps.accounts.urls')),
     path('api-auth/', include('rest_framework.urls')),
     
     # Health checks
