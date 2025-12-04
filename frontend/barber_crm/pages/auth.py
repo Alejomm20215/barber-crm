@@ -479,4 +479,3 @@ def feature_card(icon: str, title: str, description: str) -> rx.Component:
             "box_shadow": SHADOW_GOLD,
         },
     )
-

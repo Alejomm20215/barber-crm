@@ -47,4 +47,3 @@ Write-Host "  ruff format barber_crm/         - Format code with Ruff"
 Write-Host "  python scripts/reflex_linter.py - Run Reflex-specific linter"
 Write-Host "  pre-commit run --all-files      - Run all pre-commit hooks"
 Write-Host ""
-

@@ -16,53 +16,53 @@ from factory.django import DjangoModelFactory
 class UserFactory(DjangoModelFactory):
     class Meta:
         model = User
-    
-    username = factory.Sequence(lambda n: f'user{n}')
-    email = factory.LazyAttribute(lambda obj: f'{obj.username}@example.com')
-    first_name = factory.Faker('first_name')
-    last_name = factory.Faker('last_name')
+
+    username = factory.Sequence(lambda n: f"user{n}")
+    email = factory.LazyAttribute(lambda obj: f"{obj.username}@example.com")
+    first_name = factory.Faker("first_name")
+    last_name = factory.Faker("last_name")
 
 
 class BusinessFactory(DjangoModelFactory):
     class Meta:
         model = Business
-    
-    name = factory.Faker('company')
+
+    name = factory.Faker("company")
     owner = factory.SubFactory(UserFactory)
-    phone = factory.Faker('phone_number')
-    email = factory.Faker('email')
-    address = factory.Faker('address')
+    phone = factory.Faker("phone_number")
+    email = factory.Faker("email")
+    address = factory.Faker("address")
 
 
 class StaffFactory(DjangoModelFactory):
     class Meta:
         model = Staff
-    
+
     business = factory.SubFactory(BusinessFactory)
-    name = factory.Faker('name')
-    phone = factory.Faker('phone_number')
-    email = factory.Faker('email')
-    role = 'barber'
+    name = factory.Faker("name")
+    phone = factory.Faker("phone_number")
+    email = factory.Faker("email")
+    role = "barber"
     is_active = True
 
 
 class CustomerFactory(DjangoModelFactory):
     class Meta:
         model = Customer
-    
+
     business = factory.SubFactory(BusinessFactory)
-    name = factory.Faker('name')
-    phone = factory.Faker('phone_number')
-    email = factory.Faker('email')
+    name = factory.Faker("name")
+    phone = factory.Faker("phone_number")
+    email = factory.Faker("email")
 
 
 class ServiceFactory(DjangoModelFactory):
     class Meta:
         model = Service
-    
+
     business = factory.SubFactory(BusinessFactory)
-    name = factory.Faker('word')
-    price = factory.Faker('pydecimal', left_digits=3, right_digits=2, positive=True)
+    name = factory.Faker("word")
+    price = factory.Faker("pydecimal", left_digits=3, right_digits=2, positive=True)
     duration = 30
     is_active = True
 
@@ -70,14 +70,14 @@ class ServiceFactory(DjangoModelFactory):
 class AppointmentFactory(DjangoModelFactory):
     class Meta:
         model = Appointment
-    
+
     business = factory.SubFactory(BusinessFactory)
     staff = factory.SubFactory(StaffFactory)
     customer = factory.SubFactory(CustomerFactory)
     service = factory.SubFactory(ServiceFactory)
     scheduled_at = factory.LazyFunction(lambda: datetime.now() + timedelta(days=1))
-    price = factory.Faker('pydecimal', left_digits=3, right_digits=2, positive=True)
-    status = 'scheduled'
+    price = factory.Faker("pydecimal", left_digits=3, right_digits=2, positive=True)
+    status = "scheduled"
 
 
 # Fixtures
@@ -115,10 +115,7 @@ def service(business):
 def appointment(business, staff, customer, service):
     """Create a test appointment"""
     return AppointmentFactory(
-        business=business,
-        staff=staff,
-        customer=customer,
-        service=service
+        business=business, staff=staff, customer=customer, service=service
     )
 
 
@@ -126,6 +123,7 @@ def appointment(business, staff, customer, service):
 def api_client():
     """Create an API client"""
     from rest_framework.test import APIClient
+
     return APIClient()
 
 
