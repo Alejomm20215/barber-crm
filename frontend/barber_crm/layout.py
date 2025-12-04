@@ -139,6 +139,7 @@ def sidebar():
                         nav_item("Staff", "user-cog", "/staff"),
                         nav_item("Services", "scissors", "/services"),
                     ),
+                    rx.fragment(),
                 ),
                 spacing="1",
                 width="100%",
